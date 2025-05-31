@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bookController = require('../controllers/bookController');
+const ensureAuthenticated = require('../middleware/auth'); // 🔐 Import the middleware
 
 /**
  * @swagger
@@ -43,6 +44,8 @@ const bookController = require('../controllers/bookController');
  *   post:
  *     summary: Create a new book
  *     tags: [Books]
+ *     security:
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -69,6 +72,8 @@ const bookController = require('../controllers/bookController');
  *   put:
  *     summary: Update a book
  *     tags: [Books]
+ *     security:
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -92,6 +97,8 @@ const bookController = require('../controllers/bookController');
  *   delete:
  *     summary: Delete a book
  *     tags: [Books]
+ *     security:
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -103,10 +110,13 @@ const bookController = require('../controllers/bookController');
  *         description: Book deleted successfully
  */
 
-router.post('/', bookController.createBook);
+// ✅ Public routes
 router.get('/', bookController.getAllBooks);
 router.get('/:id', bookController.getBookById);
-router.put('/:id', bookController.updateBook);
-router.delete('/:id', bookController.deleteBook);
+
+// 🔐 Protected routes
+router.post('/', ensureAuthenticated, bookController.createBook);
+router.put('/:id', ensureAuthenticated, bookController.updateBook);
+router.delete('/:id', ensureAuthenticated, bookController.deleteBook);
 
 module.exports = router;

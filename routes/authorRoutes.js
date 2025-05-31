@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authorController = require('../controllers/authorController');
+const ensureAuthenticated = require('../middleware/auth'); // 🔐 Import the middleware
 
 /**
  * @swagger
@@ -43,6 +44,8 @@ const authorController = require('../controllers/authorController');
  *   post:
  *     summary: Create a new author
  *     tags: [Authors]
+ *     security:
+ *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -65,6 +68,8 @@ const authorController = require('../controllers/authorController');
  *   put:
  *     summary: Update an author
  *     tags: [Authors]
+ *     security:
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -88,6 +93,8 @@ const authorController = require('../controllers/authorController');
  *   delete:
  *     summary: Delete an author
  *     tags: [Authors]
+ *     security:
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -99,10 +106,13 @@ const authorController = require('../controllers/authorController');
  *         description: Author deleted successfully
  */
 
-router.post('/', authorController.createAuthor);
+// ✅ Public routes
 router.get('/', authorController.getAllAuthors);
 router.get('/:id', authorController.getAuthorById);
-router.put('/:id', authorController.updateAuthor);
-router.delete('/:id', authorController.deleteAuthor);
+
+// 🔐 Protected routes
+router.post('/', ensureAuthenticated, authorController.createAuthor);
+router.put('/:id', ensureAuthenticated, authorController.updateAuthor);
+router.delete('/:id', ensureAuthenticated, authorController.deleteAuthor);
 
 module.exports = router;

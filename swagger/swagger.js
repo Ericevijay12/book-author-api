@@ -4,20 +4,17 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Book and Author Management API',
+      title: 'Book Author API',
       version: '1.0.0',
-      description: 'A simple CRUD API for managing books and authors',
+      description: 'API documentation for the Book Author API with OAuth',
     },
     servers: [
       {
-        url: 'https://book-author-api.onrender.com', // Production
-      },
-      {
-        url: 'http://localhost:5000', // Local dev
+        url: 'http://localhost:5000',
       },
     ],
   },
-  apis: ['./routes/*.js'],
+  apis: ['./routes/*.js'], // <-- this is the key line
 };
 
 const swaggerSpec = swaggerJSDoc(options);
