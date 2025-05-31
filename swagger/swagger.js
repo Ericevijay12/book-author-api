@@ -10,11 +10,14 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: 'https://book-author-api.onrender.com', // Production
+      },
+      {
+        url: 'http://localhost:5000', // Local dev
       },
     ],
   },
-  apis: ['./routes/*.js'], // 👈 tells Swagger where to look for documentation comments
+  apis: ['./routes/*.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
